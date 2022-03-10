@@ -14,8 +14,7 @@ spec:
     spec:
       containers:
         - name: client
-          image: client
-          imagePullPolicy: Never
+          image: tycoonraccoon/client
 ---
 apiVersion: v1
 kind: Service

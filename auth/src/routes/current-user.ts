@@ -1,4 +1,4 @@
-import { current_user } from '../middlewares/current-user'
+import { current_user } from '@ty-tickets/common'
 
 import express from 'express'
 

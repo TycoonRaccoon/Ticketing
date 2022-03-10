@@ -2,8 +2,7 @@ import 'express-async-errors'
 import express from 'express'
 import cookie_session from 'cookie-session'
 
-import { error_handler } from './middlewares/error-handler'
-import { NotFoundError } from './errors/not-found'
+import { error_handler, NotFoundError } from '@ty-tickets/common'
 
 import { current_user_router } from './routes/current-user'
 import { sign_out_router } from './routes/sign-out'

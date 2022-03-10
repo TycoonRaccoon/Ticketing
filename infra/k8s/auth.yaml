@@ -14,8 +14,7 @@ spec:
     spec:
       containers:
         - name: auth
-          image: auth
-          imagePullPolicy: Never
+          image: tycoonraccoon/auth
           env:
             - name: JWT_KEY
               valueFrom:

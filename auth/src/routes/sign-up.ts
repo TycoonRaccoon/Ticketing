@@ -1,5 +1,4 @@
-import { validate_request } from '../middlewares/validate-request'
-import { BadRequestError } from '../errors/bad-request'
+import { validate_request, BadRequestError } from '@ty-tickets/common'
 import { User } from '../models/user'
 import jwt from 'jsonwebtoken'
 

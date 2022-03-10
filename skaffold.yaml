@@ -8,7 +8,7 @@ build:
   local:
     push: false
   artifacts:
-    - image: auth
+    - image: tycoonraccoon/auth
       context: auth
       docker:
         dockerfile: Dockerfile
@@ -16,7 +16,7 @@ build:
         manual:
           - src: src/**/*.ts
             dest: .
-    - image: client
+    - image: tycoonraccoon/client
       context: client
       docker:
         dockerfile: Dockerfile
