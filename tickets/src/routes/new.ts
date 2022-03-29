@@ -20,7 +20,13 @@ router.post(
 		const ticket = Ticket.build({ title, price, user_id: req.current_user!.id })
 		await ticket.save()
 
-		new TicketCreatedPublisher(nats_wrapper.client).publish({ id: ticket.id, title: ticket.title, price: ticket.price, user_id: ticket.user_id })
+		new TicketCreatedPublisher(nats_wrapper.client).publish({
+			id: ticket.id,
+			title: ticket.title,
+			price: ticket.price,
+			user_id: ticket.user_id,
+			version: ticket.version
+		})
 
 		res.status(201).json(ticket)
 	}

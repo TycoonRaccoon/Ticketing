@@ -2,7 +2,7 @@ import { body } from 'express-validator'
 import { Ticket } from '../models/ticket'
 import { nats_wrapper } from '../nats-wrapper'
 import { TicketUpdatedPublisher } from '../events/publishers/ticket-updated'
-import { validate_request, require_auth, NotFoundError, NotAuthorizedError } from '@ty-tickets/common'
+import { validate_request, require_auth, NotFoundError, NotAuthorizedError, BadRequestError } from '@ty-tickets/common'
 
 import express from 'express'
 
@@ -19,12 +19,20 @@ router.put(
 
 		if (!ticket) throw new NotFoundError()
 
+		if (ticket.order_id) throw new BadRequestError('Cannot edit a reserved ticket')
+
 		if (ticket.user_id != req.current_user!.id) throw new NotAuthorizedError()
 
 		ticket.set({ title: req.body.title, price: req.body.price })
 		await ticket.save()
 
-		new TicketUpdatedPublisher(nats_wrapper.client).publish({ id: ticket.id, title: ticket.title, price: ticket.price, user_id: ticket.user_id })
+		new TicketUpdatedPublisher(nats_wrapper.client).publish({
+			id: ticket.id,
+			title: ticket.title,
+			price: ticket.price,
+			user_id: ticket.user_id,
+			version: ticket.version
+		})
 
 		res.json(ticket)
 	}

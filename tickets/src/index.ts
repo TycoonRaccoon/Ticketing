@@ -1,3 +1,5 @@
+import { OrderCancelledListener } from './events/listeners/order-cancelled'
+import { OrderCreatedListener } from './events/listeners/order-created'
 import { nats_wrapper } from './nats-wrapper'
 import mongoose from 'mongoose'
 import { app } from './app'
@@ -16,6 +18,9 @@ const start = async () => {
 		console.log('Connected to MongoDB')
 
 		await nats_wrapper.connect(process.env.NATS_CLUSTER_ID, process.env.NATS_CLIENT_ID, process.env.NATS_URL)
+
+		new OrderCreatedListener(nats_wrapper.client).listen()
+		new OrderCancelledListener(nats_wrapper.client).listen()
 
 		nats_wrapper.client.on('close', () => {
 			console.log('NATS connection closed!')

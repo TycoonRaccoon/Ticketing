@@ -18,6 +18,7 @@ router.patch('/api/orders/:id/cancel', async (req, res) => {
 
 	new OrderCancelledPublisher(nats_wrapper.client).publish({
 		id: order.id,
+		version: order.version,
 		ticket: {
 			id: order.ticket.id
 		}
