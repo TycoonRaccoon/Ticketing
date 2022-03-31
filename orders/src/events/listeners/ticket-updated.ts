@@ -4,7 +4,7 @@ import { Ticket } from '../../models/ticket'
 
 export class TicketUpdatedListener extends Listener<TicketUpdatedEvent> {
 	readonly subject = Subjects.TicketUpdated
-	readonly queue_group_name = 'order-service'
+	readonly queue_group_name = 'orders-service'
 
 	async onMessage(data: TicketUpdatedEvent['data'], msg: Message) {
 		const { title, price } = data

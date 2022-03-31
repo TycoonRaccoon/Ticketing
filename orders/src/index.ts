@@ -1,3 +1,4 @@
+import { ExpirationCompleteListener } from './events/listeners/expiration-complete'
 import { TicketCreatedListener } from './events/listeners/ticket-created'
 import { TicketUpdatedListener } from './events/listeners/ticket-updated'
 import { nats_wrapper } from './nats-wrapper'
@@ -22,6 +23,8 @@ const start = async () => {
 		new TicketCreatedListener(nats_wrapper.client).listen()
 		new TicketUpdatedListener(nats_wrapper.client).listen()
 
+		new ExpirationCompleteListener(nats_wrapper.client).listen()
+
 		nats_wrapper.client.on('close', () => {
 			console.log('NATS connection closed!')
 			process.exit()
@@ -29,13 +32,13 @@ const start = async () => {
 
 		process.on('SIGINT', () => nats_wrapper.client.close())
 		process.on('SIGTERM', () => nats_wrapper.client.close())
+
+		app.listen(3000, () => {
+			console.log('Listening on port: 3000')
+		})
 	} catch (error) {
 		console.error(error)
 	}
-
-	app.listen(3000, () => {
-		console.log('Listening on port: 3000')
-	})
 }
 
 start()

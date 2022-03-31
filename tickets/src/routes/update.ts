@@ -8,7 +8,7 @@ import express from 'express'
 
 const router = express.Router()
 
-router.put(
+router.patch(
 	'/api/tickets/:id',
 	require_auth,
 	body('title').notEmpty().withMessage('Title is required'),
@@ -18,9 +18,7 @@ router.put(
 		const ticket = await Ticket.findById(req.params.id)
 
 		if (!ticket) throw new NotFoundError()
-
 		if (ticket.order_id) throw new BadRequestError('Cannot edit a reserved ticket')
-
 		if (ticket.user_id != req.current_user!.id) throw new NotAuthorizedError()
 
 		ticket.set({ title: req.body.title, price: req.body.price })
