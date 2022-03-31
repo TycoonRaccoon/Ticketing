@@ -1,10 +1,8 @@
-import { ExpirationCompleteListener } from './events/listeners/expiration-complete'
-import { PaymentCreatedListener } from './events/listeners/payment-created'
-import { TicketCreatedListener } from './events/listeners/ticket-created'
-import { TicketUpdatedListener } from './events/listeners/ticket-updated'
 import { nats_wrapper } from './nats-wrapper'
 import mongoose from 'mongoose'
 import { app } from './app'
+import { OrderCreatedListener } from './events/listeners/order-created'
+import { OrderCancelledListener } from './events/listeners/order-cancelled'
 
 const start = async () => {
 	if (!process.env.JWT_KEY) throw new Error('JWT_KEY must be defined')
@@ -21,12 +19,8 @@ const start = async () => {
 
 		await nats_wrapper.connect(process.env.NATS_CLUSTER_ID, process.env.NATS_CLIENT_ID, process.env.NATS_URL)
 
-		new TicketCreatedListener(nats_wrapper.client).listen()
-		new TicketUpdatedListener(nats_wrapper.client).listen()
-
-		new ExpirationCompleteListener(nats_wrapper.client).listen()
-
-		new PaymentCreatedListener(nats_wrapper.client).listen()
+		new OrderCreatedListener(nats_wrapper.client).listen()
+		new OrderCancelledListener(nats_wrapper.client).listen()
 
 		nats_wrapper.client.on('close', () => {
 			console.log('NATS connection closed!')
