@@ -5,14 +5,17 @@ import 'bootstrap/dist/css/bootstrap.css'
 const AppComponent = ({ Component, ...page_props }) => (
 	<>
 		<Header {...page_props} />
-		<Component {...page_props} />
+		<div className='container'>
+			<Component {...page_props} />
+		</div>
 	</>
 )
 
 AppComponent.getInitialProps = async ({ Component, ctx }) => {
-	const { data } = await buildClient(ctx).get('/api/users/current-user')
+	const client = buildClient(ctx)
+	const { data } = await client.get('/api/users/current-user')
 
-	const page_props = Component.getInitialProps && (await Component.getInitialProps(ctx))
+	const page_props = Component.getInitialProps && (await Component.getInitialProps(ctx, client, data.current_user))
 
 	return { ...page_props, ...data }
 }

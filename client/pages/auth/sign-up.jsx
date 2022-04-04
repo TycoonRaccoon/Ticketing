@@ -34,7 +34,7 @@ const SingUp = () => {
 				<input id='password' type='password' className='form-control' required value={password} onChange={e => setPassword(e.target.value)} />
 			</div>
 			{errors}
-			<button type='submit' className='btn btn-primary'>
+			<button type='submit' className='btn btn-primary mb-3'>
 				Sign Up
 			</button>
 		</form>
