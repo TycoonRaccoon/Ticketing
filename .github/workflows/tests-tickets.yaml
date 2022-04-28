@@ -9,5 +9,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - run: cd tickets && npm i && npm run test:ci
+      - uses: actions/checkout@v3
+      
+      - name: test ticket service
+        run: cd tickets && npm i && npm run test:ci
